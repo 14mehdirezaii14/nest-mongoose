@@ -21,7 +21,6 @@ export class BlogController {
 
   @Get()
   findAll(@Query() queryParams: BlogQueryDto) {
-    console.log('controller', queryParams);
     return this.blogService.findAll(queryParams);
   }
 

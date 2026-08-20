@@ -15,8 +15,6 @@ export class BlogCategoryService {
   ) {}
 
   async findAll(queryParams: BlogQueryCategoryDto) {
-    console.log(queryParams);
-
     const { page = 1, limit = 10, search } = queryParams;
     const skip = (page - 1) * limit;
 

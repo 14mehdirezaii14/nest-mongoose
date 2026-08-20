@@ -20,7 +20,6 @@ export class BlogCategoryController {
 
   @Get()
   findAll(@Query() queryParams: BlogQueryCategoryDto) {
-    console.log('controller', queryParams);
     return this.blogService.findAll(queryParams);
   }
 

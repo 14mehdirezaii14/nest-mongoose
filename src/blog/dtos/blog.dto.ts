@@ -2,8 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
 export class BlogDto {
-  _id!: number;
-
   @IsString()
   @IsNotEmpty()
   @ApiProperty({
@@ -26,9 +24,8 @@ export class BlogDto {
   category!: string;
 
   @IsString()
-  @IsNotEmpty()
   @ApiProperty({
     example: '',
   })
-  image!: string;
+  image?: string;
 }

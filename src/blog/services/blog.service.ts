@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { BlogDto } from '../dtos/blog.dto';
-import { Blog } from '../types/blog';
 import { InjectModel } from '@nestjs/mongoose';
 import { BlogSchemaDocument } from '../schemas/blog.schemas';
 import { Model, QueryFilter } from 'mongoose';
 import { BlogQueryDto } from '../dtos/blog-query.dto';
 import { sortUtils } from 'src/shared/utils/sort-utils';
+import { deleteImage } from 'src/shared/utils/file-upload-utils/file-utils';
 
 @Injectable()
 export class BlogService {
@@ -57,11 +57,20 @@ export class BlogService {
     return newBlog;
   }
 
-  async edit(id: string, body: Blog) {
-    const newBlog = this.blogModel
+  async edit(id: string, body: BlogDto) {
+    const blog = await this.blogModel.findById(id).exec();
+
+    if (!blog) {
+      throw new NotFoundException(`آیتمی با آیدی ${id} برای آپدیت یافت نشد`);
+    }
+
+    if (blog?.image !== body?.image) {
+      await deleteImage(blog?.image, 'blog');
+    }
+
+    const newBlog = await this.blogModel
       .findByIdAndUpdate(id, body, {
-        new: true,
-        runValidators: true,
+        returnDocument: 'after',
       })
       .exec();
 
@@ -70,6 +79,12 @@ export class BlogService {
 
   async delete(id: string) {
     const blog = await this.blogModel.findByIdAndDelete(id);
+
+    console.log(blog, blog?.image, id);
+
+    if (blog && blog?.image) {
+      await deleteImage(blog.image, 'blog');
+    }
 
     return blog;
   }

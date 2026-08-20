@@ -2,6 +2,7 @@ import * as mkdirp from 'mkdirp';
 import sharp from 'sharp';
 import { UploadFileDto } from '../dtos/upload-file.dto';
 import { UploadFilesDto } from '../dtos/upload-files.dto';
+import * as fs from 'fs';
 
 export const saveImage = async (
   file: Express.Multer.File,
@@ -57,4 +58,15 @@ export const saveImages = async (
   }
 
   return fileNames;
+};
+
+export const deleteImage = async (fileName: string, folder: string) => {
+  const imagePath = `/files/${folder}/`;
+
+  try {
+    await fs.promises.unlink(`./${imagePath}/main/${fileName}`);
+    await fs.promises.unlink(`./${imagePath}/resized/${fileName}`);
+  } catch (err) {
+    console.log(err);
+  }
 };

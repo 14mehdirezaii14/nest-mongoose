@@ -80,8 +80,6 @@ export class BlogService {
   async delete(id: string) {
     const blog = await this.blogModel.findByIdAndDelete(id);
 
-    console.log(blog, blog?.image, id);
-
     if (blog && blog?.image) {
       await deleteImage(blog.image, 'blog');
     }

@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Blog } from '../types/blog';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, QueryFilter } from 'mongoose';
 import { sortUtils } from 'src/shared/utils/sort-utils';
 import { BlogCategoryDocument } from '../schemas/blog-category.schema';
 import { BlogQueryCategoryDto } from '../dtos/blog-query-category.dto';
 import { BlogCategoryDto } from '../dtos/blog-category.dto';
+import { deleteImage } from 'src/shared/utils/file-upload-utils/file-utils';
 
 @Injectable()
 export class BlogCategoryService {
@@ -59,11 +59,20 @@ export class BlogCategoryService {
     return newBlog;
   }
 
-  async edit(id: string, body: Blog) {
+  async edit(id: string, body: BlogCategoryDto) {
+    const blog = await this.blogCategoryModel.findById(id).exec();
+
+    if (!blog) {
+      throw new NotFoundException(`آیتمی با آیدی ${id} برای آپدیت یافت نشد`);
+    }
+
+    if (blog?.image !== body?.image) {
+      await deleteImage(blog?.image, 'blog-category');
+    }
+
     const newBlog = this.blogCategoryModel
       .findByIdAndUpdate(id, body, {
-        new: true,
-        runValidators: true,
+        returnDocument: 'after',
       })
       .exec();
 

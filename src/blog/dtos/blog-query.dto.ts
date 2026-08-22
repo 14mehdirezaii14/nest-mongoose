@@ -1,6 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsIn, IsOptional } from 'class-validator';
-import { QueryDto } from '../../shared/utils/dtos/general.query.dto';
+import { QueryDto } from '../../shared/dtos/general.query.dto';
 
 export class BlogQueryDto extends QueryDto<
   'title' | 'content' | 'createdAt' | 'updatedAt'

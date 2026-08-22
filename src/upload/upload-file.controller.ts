@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   FileTypeValidator,
   MaxFileSizeValidator,
   ParseFilePipe,
@@ -12,8 +13,9 @@ import {
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { UploadFileService } from './upload.service';
-import { UploadFileDto } from 'src/shared/utils/dtos/upload-file.dto';
-import { UploadFilesDto } from 'src/shared/utils/dtos/upload-files.dto';
+import { UploadFileDto } from 'src/upload/dto/upload-file.dto';
+import { UploadFilesDto } from 'src/upload/dto/upload-files.dto';
+import { DeleteFileDto } from './dto/delete-file';
 
 @ApiTags('Shared')
 @Controller()
@@ -50,5 +52,11 @@ export class UploadFileController {
     @Body() body: UploadFilesDto,
   ) {
     return this.uploadFileService.uploadFiles(files, body);
+  }
+
+  @Delete('delete')
+  deleteFile(@Body() body: DeleteFileDto) {
+    const { fileName, folder } = body;
+    return this.uploadFileService.deleteFile(fileName, folder);
   }
 }

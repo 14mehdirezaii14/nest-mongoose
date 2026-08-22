@@ -4,7 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { BlogSchemaDocument } from '../schemas/blog.schemas';
 import { Model, QueryFilter } from 'mongoose';
 import { BlogQueryDto } from '../dtos/blog-query.dto';
-import { sortUtils } from 'src/shared/utils/sort-utils';
+import { sortUtils } from 'src/shared/utils/sort/sort-utils';
 import { deleteImage } from 'src/shared/utils/file-upload-utils/file-utils';
 
 @Injectable()

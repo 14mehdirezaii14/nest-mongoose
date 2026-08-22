@@ -1,7 +1,7 @@
 import * as mkdirp from 'mkdirp';
 import sharp from 'sharp';
-import { UploadFileDto } from '../dtos/upload-file.dto';
-import { UploadFilesDto } from '../dtos/upload-files.dto';
+import { UploadFileDto } from '../../../upload/dto/upload-file.dto';
+import { UploadFilesDto } from '../../../upload/dto/upload-files.dto';
 import * as fs from 'fs';
 
 export const saveImage = async (
@@ -60,7 +60,7 @@ export const saveImages = async (
   return fileNames;
 };
 
-export const deleteImage = async (fileName: string, folder: string) => {
+export const deleteImage = async (fileName: string, folder?: string) => {
   const imagePath = `/files/${folder}/`;
 
   try {

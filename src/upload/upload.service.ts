@@ -1,7 +1,8 @@
 import { Body, Injectable, UploadedFile, UploadedFiles } from '@nestjs/common';
-import { UploadFileDto } from 'src/shared/utils/dtos/upload-file.dto';
-import { UploadFilesDto } from 'src/shared/utils/dtos/upload-files.dto';
+import { UploadFileDto } from 'src/upload/dto/upload-file.dto';
+import { UploadFilesDto } from 'src/upload/dto/upload-files.dto';
 import {
+  deleteImage,
   saveImage,
   saveImages,
 } from 'src/shared/utils/file-upload-utils/file-utils';
@@ -20,5 +21,9 @@ export class UploadFileService {
     @Body() body: UploadFilesDto,
   ) {
     return saveImages(file, body);
+  }
+
+  deleteFile(fileName: string, folder?: string) {
+    return deleteImage(fileName, folder);
   }
 }

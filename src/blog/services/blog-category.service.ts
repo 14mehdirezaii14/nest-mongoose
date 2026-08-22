@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, QueryFilter } from 'mongoose';
-import { sortUtils } from 'src/shared/utils/sort-utils';
+import { sortUtils } from 'src/shared/utils/sort/sort-utils';
 import { BlogCategoryDocument } from '../schemas/blog-category.schema';
 import { BlogQueryCategoryDto } from '../dtos/blog-query-category.dto';
 import { BlogCategoryDto } from '../dtos/blog-category.dto';

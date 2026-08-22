@@ -6,6 +6,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UploadFileModule } from './upload/upload.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { APP_FILTER } from '@nestjs/core';
+import { LogFilter } from './shared/filters/log.filter';
+import { logSchema, LogSchema } from './shared/schemas/log.schemas';
 
 @Module({
   imports: [
@@ -16,8 +19,15 @@ import { join } from 'path';
       rootPath: join(__dirname, '..', 'files'),
       serveRoot: '/files',
     }),
+    MongooseModule.forFeature([{ name: LogSchema.name, schema: logSchema }]),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: LogFilter,
+    },
+  ],
 })
 export class AppModule {}

@@ -16,6 +16,10 @@ import { BlogService } from '../services/blog.service';
 
 @ApiTags('Blog')
 @Controller('blog')
+// @ApiHeader({
+//   name: 'apikey',
+//   description: 'API KEY',
+// })
 export class BlogController {
   constructor(private readonly blogService: BlogService) {}
 

@@ -12,6 +12,8 @@ async function bootstrap() {
     }),
   );
 
+  // app.useGlobalGuards(new ApiKeyGuard());
+
   const config = new DocumentBuilder()
     .setTitle('My API')
     .setDescription('The API documentation')

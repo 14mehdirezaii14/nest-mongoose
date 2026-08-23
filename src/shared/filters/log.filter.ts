@@ -29,6 +29,7 @@ export class LogFilter<T> implements ExceptionFilter {
 
     await this.appService.log({
       content: JSON.stringify(message),
+      url: request.url,
       type: LogType.Error,
     });
 

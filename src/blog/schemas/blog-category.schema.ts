@@ -9,8 +9,6 @@ export class BlogCategoryDocument extends Document {
   content: string;
   @Prop()
   image: string;
-  @Prop({ select: false })
-  __v: number;
 }
 
 export const blogCategorySchema =

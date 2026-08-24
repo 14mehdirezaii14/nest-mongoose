@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BlogModule } from './blog/blog.module';
@@ -10,6 +10,8 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { logSchema, LogSchema } from './shared/schemas/log.schemas';
 import { ConfigModule } from '@nestjs/config';
 import { LogInterceptorTsInterceptor } from './shared/intersecpotors/log.interceptor';
+import { TimeMiddleware } from './shared/middleware/time.middleware';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -25,6 +27,7 @@ import { LogInterceptorTsInterceptor } from './shared/intersecpotors/log.interce
       serveRoot: '/files',
     }),
     MongooseModule.forFeature([{ name: LogSchema.name, schema: logSchema }]),
+    UserModule,
   ],
   controllers: [AppController],
   providers: [
@@ -39,4 +42,8 @@ import { LogInterceptorTsInterceptor } from './shared/intersecpotors/log.interce
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(TimeMiddleware).forRoutes('*');
+  }
+}

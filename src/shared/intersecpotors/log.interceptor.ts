@@ -14,10 +14,7 @@ import { LogType } from '../schemas/log.schemas';
 export class LogInterceptorTsInterceptor implements NestInterceptor {
   constructor(private appService: AppService) {}
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    console.log('before');
-
     const request = context.switchToHttp().getRequest<Request>();
-    console.log(request.method);
 
     return next.handle().pipe(
       tap((response) => {

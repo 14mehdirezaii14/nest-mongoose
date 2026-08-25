@@ -5,6 +5,7 @@ import { Model, QueryFilter } from 'mongoose';
 import { UserDto } from '../dto/user.dto';
 import { sortUtils } from 'src/shared/utils/sort/sort-utils';
 import { UserQueryDto } from '../dto/user-query.dto';
+import { UpdateUserDto } from '../dto/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -65,7 +66,7 @@ export class UserService {
     throw new NotFoundException();
   }
 
-  async edit(id: string, body: UserDto) {
+  async edit(id: string, body: UpdateUserDto) {
     const user = await this.userModel.findById(id).exec();
 
     if (!user) {

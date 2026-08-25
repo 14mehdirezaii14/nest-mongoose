@@ -6,6 +6,7 @@ import { BlogCategoryDocument } from '../schemas/blog-category.schema';
 import { BlogQueryCategoryDto } from '../dtos/blog-query-category.dto';
 import { BlogCategoryDto } from '../dtos/blog-category.dto';
 import { deleteImage } from 'src/shared/utils/file-upload-utils/file-utils';
+import { BlogCategoryUpdateDto } from '../dtos/blog-category-update';
 
 @Injectable()
 export class BlogCategoryService {
@@ -59,14 +60,14 @@ export class BlogCategoryService {
     return newBlog;
   }
 
-  async edit(id: string, body: BlogCategoryDto) {
+  async edit(id: string, body: BlogCategoryUpdateDto) {
     const blog = await this.blogCategoryModel.findById(id).exec();
 
     if (!blog) {
       throw new NotFoundException(`آیتمی با آیدی ${id} برای آپدیت یافت نشد`);
     }
 
-    if (blog?.image !== body?.image) {
+    if (body?.image) {
       await deleteImage(blog?.image, 'blog-category');
     }
 

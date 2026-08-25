@@ -4,8 +4,8 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
-  Put,
   Query,
   UseInterceptors,
 } from '@nestjs/common';
@@ -17,6 +17,7 @@ import { FarsiPipe } from 'src/shared/pipe/farsi.pipe';
 import { MobilePipe } from 'src/shared/pipe/mobile.pipe';
 import { PasswordPipe } from 'src/shared/pipe/password.pipe';
 import { PasswordInterceptor } from 'src/shared/interceptors/password.interceptor';
+import { UpdateUserDto } from '../dto/update-user.dto';
 
 @ApiTags('user')
 @Controller('user')
@@ -32,8 +33,12 @@ export class UserController {
     return this.userService.findOn(id);
   }
 
-  @Put('/:id')
-  edit(@Param('id') id: string, @Body() body: UserDto) {
+  @Patch('/:id')
+  @UseInterceptors(PasswordInterceptor)
+  edit(
+    @Param('id') id: string,
+    @Body(FarsiPipe, MobilePipe, PasswordPipe) body: UpdateUserDto,
+  ) {
     return this.userService.edit(id, body);
   }
 

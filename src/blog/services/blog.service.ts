@@ -6,6 +6,7 @@ import { Model, QueryFilter } from 'mongoose';
 import { BlogQueryDto } from '../dtos/blog-query.dto';
 import { sortUtils } from 'src/shared/utils/sort/sort-utils';
 import { deleteImage } from 'src/shared/utils/file-upload-utils/file-utils';
+import { BlogUpdateDto } from '../dtos/blog-update.dto';
 
 @Injectable()
 export class BlogService {
@@ -57,14 +58,14 @@ export class BlogService {
     return newBlog;
   }
 
-  async edit(id: string, body: BlogDto) {
+  async edit(id: string, body: BlogUpdateDto) {
     const blog = await this.blogModel.findById(id).exec();
 
     if (!blog) {
       throw new NotFoundException(`آیتمی با آیدی ${id} برای آپدیت یافت نشد`);
     }
 
-    if (blog?.image !== body?.image) {
+    if (body?.image) {
       await deleteImage(blog?.image, 'blog');
     }
 

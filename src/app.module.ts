@@ -9,7 +9,7 @@ import { join } from 'path';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { logSchema, LogSchema } from './shared/schemas/log.schemas';
 import { ConfigModule } from '@nestjs/config';
-import { LogInterceptorTsInterceptor } from './shared/intersecpotors/log.interceptor';
+import { LogInterceptorTsInterceptor } from './shared/interceptors/log.interceptor';
 import { TimeMiddleware } from './shared/middleware/time.middleware';
 import { UserModule } from './user/user.module';
 import { LogFilter } from './shared/filters/log.filter';

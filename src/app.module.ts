@@ -6,12 +6,13 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UploadFileModule } from './upload/upload.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { logSchema, LogSchema } from './shared/schemas/log.schemas';
 import { ConfigModule } from '@nestjs/config';
 import { LogInterceptorTsInterceptor } from './shared/intersecpotors/log.interceptor';
 import { TimeMiddleware } from './shared/middleware/time.middleware';
 import { UserModule } from './user/user.module';
+import { LogFilter } from './shared/filters/log.filter';
 
 @Module({
   imports: [
@@ -32,10 +33,10 @@ import { UserModule } from './user/user.module';
   controllers: [AppController],
   providers: [
     AppService,
-    // {
-    //   provide: APP_FILTER,
-    //   useClass: LogFilter,
-    // },
+    {
+      provide: APP_FILTER,
+      useClass: LogFilter,
+    },
     {
       provide: APP_INTERCEPTOR,
       useClass: LogInterceptorTsInterceptor,

@@ -13,7 +13,6 @@ export class ImagesPipe implements PipeTransform {
     files: Array<Express.Multer.File>,
     metadata: ArgumentMetadata,
   ) {
-    console.log(files, metadata);
     const sizeValidator = new MaxFileSizeValidator({
       maxSize: 20000000,
     });

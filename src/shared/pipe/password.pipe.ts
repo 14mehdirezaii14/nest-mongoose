@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 
 @Injectable()
 export class PasswordPipe implements PipeTransform {
+  constructor(private readonly isNew: boolean) {}
   async transform(value: Record<string, any>) {
     const { password } = value;
 
@@ -14,12 +15,19 @@ export class PasswordPipe implements PipeTransform {
       if (!isValidPassword) {
         throw new BadRequestException('not valid password');
       } else {
-        const salt: string = await bcrypt.genSalt();
-        const hashedPassword: string = await bcrypt.hash(password, salt);
+        if (this?.isNew) {
+          const salt: string = await bcrypt.genSalt();
+          const hashedPassword: string = await bcrypt.hash(
+            password as string,
+            salt,
+          );
 
-        return { ...value, password: hashedPassword };
+          return { ...value, password: hashedPassword };
+        }
+        return value;
       }
     }
+
     return value;
   }
 }

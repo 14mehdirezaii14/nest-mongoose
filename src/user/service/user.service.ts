@@ -13,10 +13,12 @@ import { UserQueryDto } from '../dto/user-query.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { AuthDto } from '../dto/auth.dto';
 import bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
   constructor(
+    private readonly jwtService: JwtService,
     @InjectModel(UserSchemaDocument.name)
     private readonly userModel: Model<UserSchemaDocument>,
   ) {}
@@ -118,10 +120,11 @@ export class UserService {
 
     const passwordCorrect = await bcrypt.compare(password, user.password);
 
-    if (passwordCorrect) {
-      return 'success';
-    } else {
+    if (!passwordCorrect) {
       throw new BadRequestException('incorrect password');
     }
+    const payload = { _id: user._id };
+    const token = this.jwtService.sign(payload);
+    return { token };
   }
 }

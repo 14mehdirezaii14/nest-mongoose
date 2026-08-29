@@ -13,6 +13,7 @@ import { LogInterceptorTsInterceptor } from './shared/interceptors/log.intercept
 import { TimeMiddleware } from './shared/middleware/time.middleware';
 import { UserModule } from './user/user.module';
 import { LogFilter } from './shared/filters/log.filter';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { LogFilter } from './shared/filters/log.filter';
       isGlobal: true,
       envFilePath: '.env',
     }),
+
     MongooseModule.forRoot(process.env.DB_URL as string),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'files'),
@@ -29,6 +31,10 @@ import { LogFilter } from './shared/filters/log.filter';
     }),
     MongooseModule.forFeature([{ name: LogSchema.name, schema: logSchema }]),
     UserModule,
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      global: true,
+    }),
   ],
   controllers: [AppController],
   providers: [

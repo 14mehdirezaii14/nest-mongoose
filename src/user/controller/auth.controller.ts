@@ -11,6 +11,6 @@ export class AuthController {
   constructor(private readonly userService: UserService) {}
   @Post('sign-in')
   async signIn(@Body(MobilePipe, new PasswordPipe(false)) body: AuthDto) {
-    await this.userService.signIn(body);
+    return await this.userService.signIn(body);
   }
 }

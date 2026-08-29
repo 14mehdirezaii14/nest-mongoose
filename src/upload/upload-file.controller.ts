@@ -8,18 +8,22 @@ import {
   Post,
   UploadedFile,
   UploadedFiles,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
-import { ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { UploadFileService } from './upload.service';
 import { UploadFileDto } from 'src/upload/dto/upload-file.dto';
 import { UploadFilesDto } from 'src/upload/dto/upload-files.dto';
 import { DeleteFileDto } from './dto/delete-file';
 import { ImagesPipe } from 'src/shared/pipe/images.pipe';
+import { JwtGuard } from 'src/shared/guard/jwt.guard';
 
 @ApiTags('Shared')
 @Controller()
+@UseGuards(JwtGuard)
+@ApiBearerAuth()
 export class UploadFileController {
   constructor(private readonly uploadFileService: UploadFileService) {}
 

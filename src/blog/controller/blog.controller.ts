@@ -7,13 +7,15 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { BlogDto } from '../dtos/blog.dto';
 import { BlogQueryDto } from '../dtos/blog-query.dto';
 import { BlogService } from '../services/blog.service';
 import { BlogUpdateDto } from '../dtos/blog-update.dto';
+import { JwtGuard } from 'src/shared/guard/jwt.guard';
 
 @ApiTags('Blog')
 @Controller('blog')
@@ -21,6 +23,8 @@ import { BlogUpdateDto } from '../dtos/blog-update.dto';
 //   name: 'apikey',
 //   description: 'API KEY',
 // })
+@UseGuards(JwtGuard)
+@ApiBearerAuth()
 export class BlogController {
   constructor(private readonly blogService: BlogService) {}
 

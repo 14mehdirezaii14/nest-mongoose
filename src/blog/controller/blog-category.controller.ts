@@ -7,15 +7,19 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { BlogCategoryService } from '../services/blog-category.service';
 import { BlogQueryCategoryDto } from '../dtos/blog-query-category.dto';
 import { BlogCategoryDto } from '../dtos/blog-category.dto';
 import { BlogCategoryUpdateDto } from '../dtos/blog-category-update';
+import { JwtGuard } from 'src/shared/guard/jwt.guard';
 
 @ApiTags('Blog-category')
 @Controller('blog-category')
+@UseGuards(JwtGuard)
+@ApiBearerAuth()
 export class BlogCategoryController {
   constructor(private readonly blogService: BlogCategoryService) {}
 

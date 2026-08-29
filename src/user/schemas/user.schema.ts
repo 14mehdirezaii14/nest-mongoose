@@ -7,7 +7,10 @@ export class UserSchemaDocument extends Document {
   name: string;
   @Prop()
   lastName: string;
-  @Prop()
+  @Prop({
+    unique: true,
+    type: String,
+  })
   mobile: string;
   @Prop()
   password: string;

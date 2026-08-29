@@ -5,27 +5,45 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 import { AppService } from 'src/app.service';
 import { LogType } from '../schemas/log.schemas';
 
+interface MongoDuplicateKeyError extends Error {
+  code: number;
+  keyValue: Record<string, unknown>;
+}
+
 @Catch()
-export class LogFilter<T> implements ExceptionFilter {
+export class LogFilter implements ExceptionFilter {
   constructor(private readonly appService: AppService) {}
-  async catch(exception: T, host: ArgumentsHost) {
+
+  async catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
 
-    const status =
-      exception instanceof HttpException
-        ? exception.getStatus()
-        : HttpStatus.INTERNAL_SERVER_ERROR;
+    let status = HttpStatus.INTERNAL_SERVER_ERROR;
+    let message: any = 'خطای داخلی سرور رخ داده است';
 
-    const message =
-      exception instanceof HttpException
-        ? exception.getResponse()
-        : 'خطای داخلی سرور رخ داده است';
+    if (exception instanceof HttpException) {
+      status = exception.getStatus();
+      message = exception.getResponse();
+    } else {
+      const error = exception as MongoDuplicateKeyError;
+
+      if (error?.name === 'MongoServerError' && error?.code === 11000) {
+        status = HttpStatus.CONFLICT;
+
+        const keyValue = error.keyValue;
+        const field = Object.keys(keyValue)[0];
+        const value = keyValue[field];
+
+        message = `مقدار '${String(value)}' برای فیلد '${field}' قبلاً ثبت شده است.`;
+      } else {
+        console.error('Unhandled Exception:', exception);
+      }
+    }
 
     await this.appService.log({
       content: JSON.stringify(message),

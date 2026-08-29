@@ -1,4 +1,9 @@
-import { Body, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { UserSchemaDocument } from '../schemas/user.schema';
 import { Model, QueryFilter } from 'mongoose';
@@ -6,6 +11,8 @@ import { UserDto } from '../dto/user.dto';
 import { sortUtils } from 'src/shared/utils/sort/sort-utils';
 import { UserQueryDto } from '../dto/user-query.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
+import { AuthDto } from '../dto/auth.dto';
+import bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -93,5 +100,28 @@ export class UserService {
   async delete(id: string) {
     const blog = await this.userModel.findByIdAndDelete(id);
     return blog;
+  }
+
+  async findOneMobile(mobile: string) {
+    const user = await this.userModel.findOne({ mobile });
+
+    if (user) {
+      return user;
+    } else {
+      throw new NotFoundException();
+    }
+  }
+
+  async signIn(@Body() body: AuthDto) {
+    const { mobile, password } = body;
+    const user = await this.findOneMobile(mobile);
+
+    const passwordCorrect = await bcrypt.compare(password, user.password);
+
+    if (passwordCorrect) {
+      return 'success';
+    } else {
+      throw new BadRequestException('incorrect password');
+    }
   }
 }

@@ -24,6 +24,7 @@ export class LogInterceptorTsInterceptor implements NestInterceptor {
               type: LogType[request.method] as LogType,
               url: request.url,
               content: JSON.stringify(response),
+              user: request['user'] || null,
             })
             .catch((err) => {
               console.error('Error saving log:', err);

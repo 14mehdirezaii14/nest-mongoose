@@ -1,6 +1,5 @@
-import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { LogType } from '../schemas/log.schemas';
-
 export class LogDto {
   @IsNotEmpty()
   content: string | object;
@@ -10,4 +9,8 @@ export class LogDto {
   @IsNotEmpty()
   @IsEnum(LogType)
   type: LogType;
+
+  @IsOptional()
+  @IsString()
+  user?: string;
 }

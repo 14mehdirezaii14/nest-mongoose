@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { BlogDto } from '../dtos/blog.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { BlogSchemaDocument } from '../schemas/blog.schemas';
-import { Model, QueryFilter } from 'mongoose';
+import { Model } from 'mongoose';
 import { BlogQueryDto } from '../dtos/blog-query.dto';
 import { sortUtils } from 'src/shared/utils/sort/sort-utils';
 import { deleteImage } from 'src/shared/utils/file-upload-utils/file-utils';
@@ -16,18 +16,26 @@ export class BlogService {
   ) {}
 
   async findAll(queryParams: BlogQueryDto) {
-    const { page = 1, limit = 10, search } = queryParams;
+    const { page = 1, limit = 10, search, user, category } = queryParams;
     const skip = (page - 1) * limit;
 
     const sort = sortUtils(queryParams);
 
-    const filter: QueryFilter<BlogSchemaDocument> = {};
+    const filter: any = {};
 
     if (search) {
       filter.$or = [
         { title: { $regex: queryParams.search, $options: 'i' } },
         { content: { $regex: queryParams.search, $options: 'i' } },
       ];
+    }
+
+    if (category) {
+      filter.category = category;
+    }
+
+    if (user) {
+      filter.user = user;
     }
 
     const [data, total] = await Promise.all([
@@ -50,8 +58,8 @@ export class BlogService {
     throw new NotFoundException();
   }
 
-  async create(body: BlogDto) {
-    const newBlog = new this.blogModel(body);
+  async create(body: BlogDto, user: string) {
+    const newBlog = new this.blogModel({ ...body, user });
 
     await newBlog.save();
 

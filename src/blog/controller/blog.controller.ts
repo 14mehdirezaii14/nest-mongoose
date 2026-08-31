@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
   Query,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 
@@ -16,6 +17,7 @@ import { BlogQueryDto } from '../dtos/blog-query.dto';
 import { BlogService } from '../services/blog.service';
 import { BlogUpdateDto } from '../dtos/blog-update.dto';
 import { JwtGuard } from 'src/shared/guard/jwt.guard';
+import { User } from 'src/shared/decorators/user.decorator';
 
 @ApiTags('Blog')
 @Controller('blog')
@@ -39,8 +41,9 @@ export class BlogController {
   }
 
   @Post()
-  create(@Body() body: BlogDto) {
-    return this.blogService.create(body);
+  create(@Body() body: BlogDto, @User() user: string) {
+    console.log({ user });
+    return this.blogService.create(body, user);
   }
 
   @Get('category')

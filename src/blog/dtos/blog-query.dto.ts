@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsIn, IsOptional } from 'class-validator';
+import { IsIn, IsOptional, IsString } from 'class-validator';
 import { QueryDto } from '../../shared/dtos/general.query.dto';
 
 export class BlogQueryDto extends QueryDto<
@@ -11,4 +11,14 @@ export class BlogQueryDto extends QueryDto<
   @IsOptional()
   @IsIn(['title', 'content', 'createdAt', 'updatedAt'])
   declare sortBy?: 'title' | 'content' | 'createdAt' | 'updatedAt';
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  user?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  category?: string;
 }

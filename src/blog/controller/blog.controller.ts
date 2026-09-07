@@ -42,7 +42,6 @@ export class BlogController {
 
   @Post()
   create(@Body() body: BlogDto, @User() user: string) {
-    console.log({ user });
     return this.blogService.create(body, user);
   }
 

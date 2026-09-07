@@ -29,4 +29,11 @@ export class UserDto {
     example: '',
   })
   password: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty({
+    example: '',
+  })
+  code: string;
 }

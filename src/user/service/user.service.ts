@@ -14,6 +14,7 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 import { AuthDto } from '../dto/auth.dto';
 import bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { ConfirmDto } from '../dto/confirm.dto';
 
 @Injectable()
 export class UserService {
@@ -100,8 +101,8 @@ export class UserService {
   }
 
   async delete(id: string) {
-    const blog = await this.userModel.findByIdAndDelete(id);
-    return blog;
+    const user = await this.userModel.findByIdAndDelete(id);
+    return user;
   }
 
   async findOneMobile(mobile: string) {
@@ -123,8 +124,35 @@ export class UserService {
     if (!passwordCorrect) {
       throw new BadRequestException('incorrect password');
     }
+
+    await this.sendCode(mobile);
+  }
+
+  async confirm(body: ConfirmDto) {
+    const { mobile, code } = body;
+    const user = await this.findOneMobile(mobile);
+
+    const codeCorrect = await bcrypt.compare(code, user.code);
+
+    if (!codeCorrect) {
+      throw new BadRequestException('incorrect code');
+    }
     const payload = { _id: user._id };
     const token = this.jwtService.sign(payload);
     return { token };
+  }
+
+  async sendCode(mobile: string) {
+    const user = await this.findOneMobile(mobile);
+    const code = Math.floor(1000 + Math.random() * 9000);
+
+    const salt = await bcrypt.genSalt();
+
+    const hashedCode = await bcrypt.hash(code.toString(), salt);
+    console.log('after hash code');
+    user.code = hashedCode;
+    await user.save();
+
+    console.log(code);
   }
 }

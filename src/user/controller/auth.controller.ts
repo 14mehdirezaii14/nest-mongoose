@@ -4,6 +4,8 @@ import { AuthDto } from '../dto/auth.dto';
 import { MobilePipe } from 'src/shared/pipe/mobile.pipe';
 import { PasswordPipe } from 'src/shared/pipe/password.pipe';
 import { UserService } from '../service/user.service';
+import { ConfirmDto } from '../dto/confirm.dto';
+import { ResendDto } from '../dto/resend.dto';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -12,5 +14,15 @@ export class AuthController {
   @Post('sign-in')
   async signIn(@Body(MobilePipe, new PasswordPipe(false)) body: AuthDto) {
     return await this.userService.signIn(body);
+  }
+
+  @Post('confirm')
+  async Confirm(@Body(MobilePipe) body: ConfirmDto) {
+    return await this.userService.confirm(body);
+  }
+
+  @Post('resend')
+  async ResendCode(@Body(MobilePipe) body: ResendDto) {
+    return await this.userService.sendCode(body.mobile);
   }
 }

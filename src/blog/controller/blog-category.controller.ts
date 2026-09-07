@@ -15,10 +15,12 @@ import { BlogQueryCategoryDto } from '../dtos/blog-query-category.dto';
 import { BlogCategoryDto } from '../dtos/blog-category.dto';
 import { BlogCategoryUpdateDto } from '../dtos/blog-category-update';
 import { JwtGuard } from 'src/shared/guard/jwt.guard';
+import { RoleGuard } from 'src/shared/guard/role.guard';
+import { Role } from 'src/user/schemas/user.schema';
 
 @ApiTags('Blog-category')
 @Controller('blog-category')
-@UseGuards(JwtGuard)
+@UseGuards(JwtGuard, new RoleGuard([Role.Admin, Role.CopyRighter]))
 @ApiBearerAuth()
 export class BlogCategoryController {
   constructor(private readonly blogService: BlogCategoryService) {}

@@ -137,7 +137,7 @@ export class UserService {
     if (!codeCorrect) {
       throw new BadRequestException('incorrect code');
     }
-    const payload = { _id: user._id };
+    const payload = { _id: user._id, role: user?.role };
     const token = this.jwtService.sign(payload);
     return { token };
   }

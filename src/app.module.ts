@@ -6,7 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UploadFileModule } from './upload/upload.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { logSchema, LogSchema } from './shared/schemas/log.schemas';
 import { ConfigModule } from '@nestjs/config';
 import { LogInterceptorTsInterceptor } from './shared/interceptors/log.interceptor';
@@ -14,6 +14,7 @@ import { TimeMiddleware } from './shared/middleware/time.middleware';
 import { UserModule } from './user/user.module';
 import { LogFilter } from './shared/filters/log.filter';
 import { JwtModule } from '@nestjs/jwt';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -24,6 +25,12 @@ import { JwtModule } from '@nestjs/jwt';
       envFilePath: '.env',
     }),
 
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000,
+        limit: 10,
+      },
+    ]),
     MongooseModule.forRoot(process.env.DB_URL as string),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'files'),
@@ -46,6 +53,10 @@ import { JwtModule } from '@nestjs/jwt';
     {
       provide: APP_INTERCEPTOR,
       useClass: LogInterceptorTsInterceptor,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
     },
   ],
 })

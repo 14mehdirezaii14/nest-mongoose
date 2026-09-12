@@ -35,9 +35,15 @@ importers:
       '@nestjs/swagger':
         specifier: ^11.4.6
         version: 11.4.6(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)
+      '@nestjs/throttler':
+        specifier: ^6.5.0
+        version: 6.5.0(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1)(reflect-metadata@0.2.2)
       '@types/mongoose':
         specifier: ^5.11.97
         version: 5.11.97
+      als-csrf:
+        specifier: ^1.4.0
+        version: 1.4.0
       bcrypt:
         specifier: ^6.0.0
         version: 6.0.0
@@ -47,6 +53,9 @@ importers:
       class-validator:
         specifier: ^0.15.1
         version: 0.15.1
+      helmet:
+        specifier: ^8.3.0
+        version: 8.3.0
       mkdirp:
         specifier: ^3.0.1
         version: 3.0.1
@@ -983,6 +992,13 @@ packages:
       '@nestjs/platform-express':
         optional: true
 
+  '@nestjs/throttler@6.5.0':
+    resolution: {integrity: sha512-9j0ZRfH0QE1qyrj9JjIRDz5gQLPqq9yVC2nHsrosDVAfI5HHw08/aUAWx9DZLSdQf4HDkmhTTEGLrRFHENvchQ==}
+    peerDependencies:
+      '@nestjs/common': ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0
+      '@nestjs/core': ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0
+      reflect-metadata: ^0.1.13 || ^0.2.0
+
   '@noble/hashes@1.8.0':
     resolution: {integrity: sha512-jCs9ldd7NwzpgXDIf6P3+NrHh9/sD6CQdxHyjQI+h/6rDNo88ypBxxz45UDuZHz9r3tNz7N/VInSVoVdtXEI4A==}
     engines: {node: ^14.21.3 || >=16}
@@ -1428,6 +1444,27 @@ packages:
 
   ajv@8.20.0:
     resolution: {integrity: sha512-Thbli+OlOj+iMPYFBVBfJ3OmCAnaSyNn4M1vz9T6Gka5Jt9ba/HIR56joy65tY6kx/FCF5VXNB819Y7/GUrBGA==}
+
+  als-cookie-options@1.6.0:
+    resolution: {integrity: sha512-JO6pFd0gSZVumnJ8g6e9XsB4j3GRBoTqjTjnEqeaHo9+cCZ2J2Z54Wm980rwsv4aCizqZCtvEYCzdgoSEcNTKQ==}
+
+  als-cookie@3.0.0:
+    resolution: {integrity: sha512-BNQBQHnFX6H5CSf/FBaM0SYTGkMKG9JUSiJ3QAVH6qDKNqoC98Ay6r29Ra85s/Vay8D25baLrFeAGbC8QUp0wQ==}
+
+  als-crypt@4.0.1:
+    resolution: {integrity: sha512-bKLOMv+811XszCMCbT4MQlANfYhr794u1E5X6Y+Fmpc8r7GtIN5/MhTk2BbtvQ+DoiVRGzSjB8r1nICgQ78xRA==}
+
+  als-csrf@1.4.0:
+    resolution: {integrity: sha512-3Bey8HL+7Cf/V4IN88+eU3Lvwol436EoJu7tBUs5ISGf/GHDy8LOqpkt7tXSi1o2X9B5etu48lbTgg9b0kKEng==}
+
+  als-schema@2.2.0:
+    resolution: {integrity: sha512-jG7E96Rd/OqobDbs16le/lmNdqVQupFO5T7wxlY8j3TY9UUS/EtWrI4ayk4soAmVDI/+YnHw8iIVEglC0AnJrw==}
+
+  als-token-manager@1.0.1:
+    resolution: {integrity: sha512-53R7bkB5aytUacT3KLsyxsEEvAIf3bpqt1ntXQAfh3VsAHalNZGL5PWwx0tw8sbh5tFMUlt6xcAiN9SwXwko3Q==}
+
+  als-uid@1.2.1:
+    resolution: {integrity: sha512-QmDLrDnUWOwJKK5/sf9mJ5+swxy+/fr3Lxc/Fe+0AZMqD3W1ZGC2ZD4WaF146N/Za1dh1YIhbOhBAK22JiIuJw==}
 
   ansi-colors@4.1.3:
     resolution: {integrity: sha512-/6w/C21Pm1A7aZitlI5Ni/2J6FFQN8i1Cvz3kHABAAbw93v/NlvKdVOqz7CCWz/3iv/JplRSEEZ83XION15ovw==}
@@ -2161,6 +2198,10 @@ packages:
   hasown@2.0.4:
     resolution: {integrity: sha512-T2UbfbBEF32wiepXIsMlTW9+dDYC6wMh/t/vYA4tuOMKqWz/n3vr1NFSxQiyP+zk2mXsoMA/i/7qV6LKut1t1A==}
     engines: {node: '>= 0.4'}
+
+  helmet@8.3.0:
+    resolution: {integrity: sha512-Qgpiaws3Sm30Av8Eah6sjMCZZwjlBu+E68rhpCWBshY1lb09HtLwj5GviX0OyQIn+ulUS0iX0AxN5n3tLZzz1w==}
+    engines: {node: '>=18.0.0'}
 
   html-escaper@2.0.2:
     resolution: {integrity: sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==}
@@ -4459,6 +4500,12 @@ snapshots:
     optionalDependencies:
       '@nestjs/platform-express': 11.2.1(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1)
 
+  '@nestjs/throttler@6.5.0(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1)(reflect-metadata@0.2.2)':
+    dependencies:
+      '@nestjs/common': 11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@nestjs/core': 11.2.1(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.2.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      reflect-metadata: 0.2.2
+
   '@noble/hashes@1.8.0': {}
 
   '@paralleldrive/cuid2@2.3.1':
@@ -4955,6 +5002,31 @@ snapshots:
       fast-uri: 3.1.5
       json-schema-traverse: 1.0.0
       require-from-string: 2.0.2
+
+  als-cookie-options@1.6.0:
+    dependencies:
+      als-schema: 2.2.0
+
+  als-cookie@3.0.0:
+    dependencies:
+      als-cookie-options: 1.6.0
+      als-crypt: 4.0.1
+
+  als-crypt@4.0.1: {}
+
+  als-csrf@1.4.0:
+    dependencies:
+      als-cookie: 3.0.0
+      als-schema: 2.2.0
+      als-token-manager: 1.0.1
+
+  als-schema@2.2.0:
+    dependencies:
+      als-uid: 1.2.1
+
+  als-token-manager@1.0.1: {}
+
+  als-uid@1.2.1: {}
 
   ansi-colors@4.1.3: {}
 
@@ -5711,6 +5783,8 @@ snapshots:
   hasown@2.0.4:
     dependencies:
       function-bind: 1.1.2
+
+  helmet@8.3.0: {}
 
   html-escaper@2.0.2: {}
 

@@ -17,6 +17,7 @@ import { BlogCategoryUpdateDto } from '../dtos/blog-category-update';
 import { JwtGuard } from 'src/shared/guard/jwt.guard';
 import { RoleGuard } from 'src/shared/guard/role.guard';
 import { Role } from 'src/user/schemas/user.schema';
+import { UrlPipe } from 'src/shared/pipe/url.pipe';
 
 @ApiTags('Blog-category')
 @Controller('blog-category')
@@ -36,7 +37,7 @@ export class BlogCategoryController {
   }
 
   @Post()
-  create(@Body() body: BlogCategoryDto) {
+  create(@Body(UrlPipe) body: BlogCategoryDto) {
     return this.blogService.create(body);
   }
 
@@ -46,7 +47,7 @@ export class BlogCategoryController {
   }
 
   @Patch(':id')
-  edit(@Param('id') id: string, @Body() body: BlogCategoryUpdateDto) {
+  edit(@Param('id') id: string, @Body(UrlPipe) body: BlogCategoryUpdateDto) {
     return this.blogService.edit(id, body);
   }
 

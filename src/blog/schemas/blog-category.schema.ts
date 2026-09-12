@@ -9,6 +9,12 @@ export class BlogCategoryDocument extends Document {
   content: string;
   @Prop()
   image: string;
+  @Prop({
+    unique: true,
+    required: true,
+    type: String,
+  })
+  url: string;
 }
 
 export const blogCategorySchema =

@@ -28,4 +28,10 @@ export class BlogDto {
     example: '',
   })
   image?: string;
+
+  @IsString()
+  @ApiProperty({
+    example: '',
+  })
+  url: string;
 }

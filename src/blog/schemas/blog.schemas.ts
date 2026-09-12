@@ -26,6 +26,12 @@ export class BlogSchemaDocument extends Document {
     required: false,
   })
   user?: UserDto;
+  @Prop({
+    unique: true,
+    required: true,
+    type: String,
+  })
+  url: string;
 }
 
 export const blogSchema = SchemaFactory.createForClass(BlogSchemaDocument);

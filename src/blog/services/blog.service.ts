@@ -16,7 +16,7 @@ export class BlogService {
   ) {}
 
   async findAll(queryParams: BlogQueryDto) {
-    const { page = 1, limit = 10, search, user, category } = queryParams;
+    const { page = 1, limit = 10, search, user, category, url } = queryParams;
     const skip = (page - 1) * limit;
 
     const sort = sortUtils(queryParams);
@@ -25,9 +25,13 @@ export class BlogService {
 
     if (search) {
       filter.$or = [
-        { title: { $regex: queryParams.search, $options: 'i' } },
-        { content: { $regex: queryParams.search, $options: 'i' } },
+        { title: { $regex: search, $options: 'i' } },
+        { content: { $regex: search, $options: 'i' } },
       ];
+    }
+
+    if (url) {
+      filter.$or = [{ url: { $regex: url, $options: 'i' } }];
     }
 
     if (category) {

@@ -21,4 +21,9 @@ export class BlogQueryDto extends QueryDto<
   @IsOptional()
   @IsString()
   category?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  url: string;
 }

@@ -23,4 +23,10 @@ export class BlogCategoryDto {
     example: '',
   })
   image?: string;
+
+  @IsString()
+  @ApiProperty({
+    example: '',
+  })
+  url: string;
 }

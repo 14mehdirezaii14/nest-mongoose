@@ -16,7 +16,15 @@ export class BlogService {
   ) {}
 
   async findAll(queryParams: BlogQueryDto) {
-    const { page = 1, limit = 10, search, user, category, url } = queryParams;
+    const {
+      page = 1,
+      limit = 10,
+      search,
+      user,
+      category,
+      url,
+      exclude,
+    } = queryParams;
     const skip = (page - 1) * limit;
 
     const sort = sortUtils(queryParams);
@@ -42,6 +50,10 @@ export class BlogService {
       filter.user = user;
     }
 
+    if (exclude?.length) {
+      filter._id = { $nin: exclude };
+    }
+
     const [data, total] = await Promise.all([
       this.blogModel.find(filter).skip(skip).limit(limit).sort(sort).exec(),
       this.blogModel.countDocuments().exec(),
@@ -50,9 +62,21 @@ export class BlogService {
     return { data, total };
   }
 
-  async findOn(id: string) {
+  async findOne(id: string) {
     const blog = await this.blogModel
       .findOne({ _id: id })
+      .populate('category')
+      .exec();
+
+    if (blog) {
+      return blog;
+    }
+    throw new NotFoundException();
+  }
+
+  async findOneWithUrl(url: string) {
+    const blog = await this.blogModel
+      .findOne({ url: url })
       .populate('category')
       .exec();
 

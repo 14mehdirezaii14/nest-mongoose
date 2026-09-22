@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, QueryFilter } from 'mongoose';
+import { Model, ProjectionType, QueryFilter } from 'mongoose';
 import { sortUtils } from 'src/shared/utils/sort/sort-utils';
 import { BlogCategoryDocument } from '../schemas/blog-category.schema';
 import { BlogQueryCategoryDto } from '../dtos/blog-query-category.dto';
@@ -15,7 +15,10 @@ export class BlogCategoryService {
     private readonly blogCategoryModel: Model<BlogCategoryDocument>,
   ) {}
 
-  async findAll(queryParams: BlogQueryCategoryDto) {
+  async findAll(
+    queryParams: BlogQueryCategoryDto,
+    projection: ProjectionType<BlogCategoryDocument> = {},
+  ) {
     const { page = 1, limit = 10, search, url } = queryParams;
     const skip = (page - 1) * limit;
 
@@ -25,8 +28,8 @@ export class BlogCategoryService {
 
     if (search) {
       filter.$or = [
-        { title: { $regex: queryParams.search, $options: 'i' } },
-        { content: { $regex: queryParams.search, $options: 'i' } },
+        { title: { $regex: search, $options: 'i' } },
+        { content: { $regex: search, $options: 'i' } },
       ];
     }
 
@@ -36,24 +39,41 @@ export class BlogCategoryService {
 
     const [data, total] = await Promise.all([
       this.blogCategoryModel
-        .find(filter)
+        .find(filter, projection)
         .skip(skip)
         .limit(limit)
         .sort(sort)
         .exec(),
-      this.blogCategoryModel.countDocuments().exec(),
+      this.blogCategoryModel.countDocuments(filter).exec(),
     ]);
 
     return { data, total };
   }
 
-  async findOn(id: string) {
-    const blog = await this.blogCategoryModel.findOne({ _id: id }).exec();
+  async findOne(id: string, projection?: ProjectionType<BlogCategoryDocument>) {
+    const blog = await this.blogCategoryModel.findById(id, projection).exec();
 
-    if (blog) {
-      return blog;
+    if (!blog) {
+      throw new NotFoundException('Blog category not found');
     }
-    throw new NotFoundException();
+
+    return blog;
+  }
+
+  async findOneWithUrl(
+    url: string,
+    projection: ProjectionType<BlogCategoryDocument> = {},
+  ) {
+    const blog = await this.blogCategoryModel
+      .findOne({ url: url })
+      .select(projection)
+      .exec();
+
+    if (!blog) {
+      throw new NotFoundException('Blog category not found');
+    }
+
+    return blog;
   }
 
   async create(body: BlogCategoryDto) {

@@ -33,7 +33,7 @@ export class BlogCategoryController {
 
   @Get(':id')
   findOn(@Param('id') id: string) {
-    return this.blogService.findOn(id);
+    return this.blogService.findOne(id);
   }
 
   @Post()

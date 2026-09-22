@@ -15,6 +15,7 @@ import { UserModule } from './user/user.module';
 import { LogFilter } from './shared/filters/log.filter';
 import { JwtModule } from '@nestjs/jwt';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { SeoModule } from './seo/seo.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
       secret: process.env.JWT_SECRET,
       global: true,
     }),
+    SeoModule,
   ],
   controllers: [AppController],
   providers: [
